@@ -8,6 +8,7 @@
         <module>config-server</module>
         <module>service-parent</module>
 		<module>eureka-server</module>
+		<module>ticket-service</module>
 	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
