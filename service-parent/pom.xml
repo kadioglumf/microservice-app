@@ -6,11 +6,12 @@
         <artifactId>microservice-app</artifactId>
         <groupId>com.kadioglumf</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>service-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <dependencies>
