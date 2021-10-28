@@ -37,7 +37,7 @@ public class AccountApi
         return ResponseEntity.ok(accountService.save(account));
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<AccountDto> update(@PathVariable("id") String id, @RequestBody AccountDto account) {
         return ResponseEntity.ok(accountService.update(id, account));
     }
