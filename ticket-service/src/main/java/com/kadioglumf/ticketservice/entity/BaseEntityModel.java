@@ -5,7 +5,12 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Version;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.EntityListeners;
+import javax.persistence.PrePersist;
+import javax.persistence.Version;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -24,6 +29,7 @@ import java.util.UUID;
 @EqualsAndHashCode(of = {"id","version"})
 @Data
 @ToString(of = {"id", "version"})
+@EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntityModel implements Serializable
 {
     @Id
@@ -38,9 +44,10 @@ public abstract class BaseEntityModel implements Serializable
     private Date createdAt;
 
     @Column(name = "updated_at")
+    @LastModifiedDate
     private Date updatedAt;
 
     @Version
     @Column(name = "version")
-    private String version;
+    private Integer version;
 }

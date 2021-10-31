@@ -11,6 +11,10 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 1234
+    ports:
+    - '3307:3306'
+    volumes:
+      - my-datavolume:/var/lib/mysql
 
   elasticsearch:
     image: elasticsearch:6.8.5
@@ -19,3 +23,5 @@ services:
     - '9300:9300'
     environment:
       discovery.type: single-node
+volumes:
+  my-datavolume:

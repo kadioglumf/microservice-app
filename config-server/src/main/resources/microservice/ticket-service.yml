@@ -5,7 +5,7 @@ spring:
   application:
     name: ticket-service
   datasource:
-    url: jdbc:mysql://localhost:3306/microserviceapp
+    url: jdbc:mysql://localhost:3307/microserviceapp
     username: root
     password: 1234
   jpa:
