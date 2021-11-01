@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @EnableJpaRepositories("com.kadioglumf")
 @EnableElasticsearchRepositories
+@ComponentScan("com.kadioglumf")
 public class TicketConfiguration
 {
     @Bean

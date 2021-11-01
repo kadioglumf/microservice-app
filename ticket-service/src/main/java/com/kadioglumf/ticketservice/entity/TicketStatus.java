@@ -1,8 +1,12 @@
 package com.kadioglumf.ticketservice.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author kadioglumf
  */
+@Getter
 public enum TicketStatus
 {
     OPEN("Açık"),

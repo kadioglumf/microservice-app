@@ -1,6 +1,8 @@
 package com.kadioglumf.ticketservice.service.impl;
 
 import com.google.common.base.Preconditions;
+import com.kadioglumf.client.AccountServiceClient;
+import com.kadioglumf.client.contracts.AccountDto;
 import com.kadioglumf.ticketservice.dto.TicketDto;
 import com.kadioglumf.ticketservice.entity.PriorityType;
 import com.kadioglumf.ticketservice.entity.Ticket;
@@ -10,67 +12,74 @@ import com.kadioglumf.ticketservice.repository.TicketRepository;
 import com.kadioglumf.ticketservice.repository.es.TicketElasticRepository;
 import com.kadioglumf.ticketservice.service.TicketService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author kadioglumf
  */
-@Component
+@Service
 @RequiredArgsConstructor
-public class TicketServiceImpl implements TicketService
-{
+public class TicketServiceImpl implements TicketService {
 
-    private final TicketRepository ticketRepository;
-    private final ModelMapper modelMapper;
     private final TicketElasticRepository ticketElasticRepository;
-
+    private final TicketRepository ticketRepository;
+    private final AccountServiceClient accountServiceClient;
 
     @Override
     @Transactional
-    public TicketDto save(TicketDto ticketDto)
-    {
+    public TicketDto save(TicketDto ticketDto) {
+        // Ticket Entity
         Ticket ticket = new Ticket();
-        //TODO Account APi dan doğrula
-        // ticket.setAssignee();
-        Preconditions.checkNotNull(ticketDto.getDescription(),"Description boş olamaz");
+        ResponseEntity<AccountDto> accountDtoResponseEntity = accountServiceClient.get(ticketDto.getAssignee());
+        Preconditions.checkNotNull(accountDtoResponseEntity.getBody(), "body boş olamaz");
         ticket.setDescription(ticketDto.getDescription());
         ticket.setNotes(ticketDto.getNotes());
+        ticket.setTicketDate(ticketDto.getTicketDate());
         ticket.setTicketStatus(TicketStatus.valueOf(ticketDto.getTicketStatus()));
         ticket.setPriorityType(PriorityType.valueOf(ticketDto.getPriorityType()));
-        ticket.setTicketDate(ticketDto.getTicketDate());
+        ticket.setAssignee(accountDtoResponseEntity.getBody().getId());
+
+        // mysql kaydet
         ticket = ticketRepository.save(ticket);
 
-        //elastic search modeli yarat
-        TicketModel ticketModel = TicketModel.builder()
+
+        // TicketModel nesnesi yarat
+        TicketModel model = TicketModel.builder()
                 .description(ticket.getDescription())
+                .notes(ticket.getNotes())
                 .id(ticket.getId())
-                .priorityType(ticket.getPriorityType().name())
-                .ticketStatus(ticket.getTicketStatus().name())
+                .assignee(accountDtoResponseEntity.getBody().getNameSurname())
+                .priorityType(ticket.getPriorityType().getLabel())
+                .ticketStatus(ticket.getTicketStatus().getLabel())
                 .ticketDate(ticket.getTicketDate()).build();
-        ticketElasticRepository.save(ticketModel);
+
+        // elastic kaydet
+        ticketElasticRepository.save(model);
+
+        // olusan nesneyi döndür
         ticketDto.setId(ticket.getId());
+
+        // Kuyruga notification yaz
+        //ticketNotificationService.sendToQueue(ticket);
         return ticketDto;
     }
 
     @Override
-    public TicketDto update(String id, TicketDto ticketDto)
-    {
+    public TicketDto update(String id, TicketDto ticketDto) {
         return null;
     }
 
     @Override
-    public Page<TicketDto> getPagination(Pageable pageable)
-    {
+    public TicketDto getById(String ticketId) {
         return null;
     }
 
     @Override
-    public TicketDto getById(String ticketId)
-    {
+    public Page<TicketDto> getPagination(Pageable pageable) {
         return null;
     }
 }

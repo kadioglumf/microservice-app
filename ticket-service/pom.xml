@@ -34,6 +34,10 @@
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
 
-
+        <dependency>
+            <groupId>com.kadioglumf</groupId>
+            <artifactId>service-commons</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

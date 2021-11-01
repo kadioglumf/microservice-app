@@ -1,9 +1,9 @@
 package com.kadioglumf.accountservice.service.impl;
 
-import com.kadioglumf.accountservice.dto.AccountDto;
 import com.kadioglumf.accountservice.entity.Account;
 import com.kadioglumf.accountservice.repository.AccountRepository;
 import com.kadioglumf.accountservice.service.AccountService;
+import com.kadioglumf.client.contracts.AccountDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;

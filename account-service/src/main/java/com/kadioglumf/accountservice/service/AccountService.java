@@ -1,6 +1,6 @@
 package com.kadioglumf.accountservice.service;
 
-import com.kadioglumf.accountservice.dto.AccountDto;
+import com.kadioglumf.client.contracts.AccountDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 

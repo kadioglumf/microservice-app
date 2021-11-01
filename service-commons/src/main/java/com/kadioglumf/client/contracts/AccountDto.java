@@ -1,4 +1,4 @@
-package com.kadioglumf.accountservice.dto;
+package com.kadioglumf.client.contracts;
 
 /**
  * @author kadioglumf
@@ -29,3 +29,4 @@ public class AccountDto {
         return this.name + " " + this.surname;
     }
 }
+
